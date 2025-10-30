@@ -1,0 +1,40 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "description": "task manager backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --watch . index.js",
+    "test": "npx playwright test --headed",
+    "postversion": "git push && git push --tags",
+    "test:chrome": "npx playwright test --project=chromium --headed",
+    "test:firefox": "npx playwright test --project=firefox --headed",
+    "test:edge": "npx playwright test --project=webkit --headed",
+    "test:all": "npx playwright test --headed"
+  },
+  "keywords": [],
+  "author": "Aniket Datta",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.18.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.18.0",
+    "@prisma/extension-accelerate": "^2.0.2",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.2",
+    "nodemailer": "^7.0.9",
+    "pg-promise": "^12.2.0",
+    "postgres": "^3.4.7"
+  }
+}
