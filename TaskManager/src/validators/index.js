@@ -1,8 +1,8 @@
 import { body } from "express-validator";
 import {
-  AvailableTaskStatuses,
+  AvailableTaskStatus,
   AvailableUserRoles,
-} from "../utils/constants.js";
+} from "../constants/constants.js";
 
 const userRegisterValidator = () => {
   return [
@@ -89,7 +89,7 @@ const createTaskValidator = () => {
       .optional()
       .notEmpty()
       .withMessage("Status is required")
-      .isIn(AvailableTaskStatuses),
+      .isIn(AvailableTaskStatus),
   ];
 };
 
@@ -99,7 +99,7 @@ const updateTaskValidator = () => {
     body("description").optional(),
     body("status")
       .optional()
-      .isIn(AvailableTaskStatuses)
+      .isIn(AvailableTaskStatus)
       .withMessage("Status is invalid"),
     body("assignedTo").optional(),
   ];
