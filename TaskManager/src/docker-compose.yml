@@ -706,4 +706,5 @@ services:
         reservations:
           cpus: '0.25'
           memory: 256M
+          #docker-compose up --scale web=3 -d
           
