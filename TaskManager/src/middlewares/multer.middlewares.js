@@ -7,13 +7,15 @@ const storage = multer.diskStorage({
     cb(null, `./public/images`);
   },
   filename: function (req, file, cb) {
+    // const uniqueSuffix = Date.now + "-" + Math.round(Math.random()*1e9);
+    //cb(null, file.fieldname + "-" + uniqueSuffix);
     cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
 // Middleware responsible to read form data and upload the File object to the mentioned path
 export const upload = multer({
-  storage,
+  storage: storage,
   limits: {
     fileSize: 1 * 1000 * 1000,
   },

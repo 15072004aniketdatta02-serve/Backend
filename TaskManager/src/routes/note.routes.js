@@ -40,3 +40,4 @@ router
   .delete(validateProjectPermission([UserRolesEnum.ADMIN]), deleteNote);
 
 export default router;
+//file-uploader: app.post('/upload', function(req,res){console.log(req.files.foo);})

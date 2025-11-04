@@ -11,7 +11,7 @@ const sendEmail = async (options) => {
     theme: "default",
     product: {
       name: "Task Manager",
-      link: "https://taskmanager.app",
+      link: "https://taskmanager.work",
     },
   });
 
