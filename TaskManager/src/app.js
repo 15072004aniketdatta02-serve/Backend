@@ -12,6 +12,10 @@ import taskRoutes from "./routes/task.routes.js";
 //router middleware
 
 app.use("/api/v1/healthcheck", healthcheckRoutes);
+// app.use('api/v1/healthcheck/authentication',authRoutes);
+// app.use('api/v1/healthcheck/notes',noteRoutes);
+// app.use('api/v1/healthcheck/projects',projectRoutes);
+// app.use('api/v1/healthcheck/tasks',taskRoutes);
 
 
 export default app;
