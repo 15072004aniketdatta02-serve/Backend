@@ -43,6 +43,19 @@ const createNote = asyncHandler(async (req, res) => {
     "username fullName avatar",
   );
 
+  // Emit real-time event to project room (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager) {
+      socketManager.emitToProject(
+        projectId,
+        "note:created",
+        { note: populatedNote, projectId, createdBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
+
   return res
     .status(201)
     .json(new APIResponse(201, populatedNote, "Note created successfully"));
@@ -65,6 +78,19 @@ const updateNote = asyncHandler(async (req, res) => {
     { new: true },
   ).populate("createdBy", "username fullName avatar");
 
+  // Emit real-time update (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager) {
+      socketManager.emitToProject(
+        existingNote.project.toString(),
+        "note:updated",
+        { note, projectId: existingNote.project.toString(), updatedBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
+
   return res
     .status(200)
     .json(new APIResponse(200, note, "Note updated successfully"));
@@ -78,6 +104,19 @@ const deleteNote = asyncHandler(async (req, res) => {
   if (!note) {
     throw new ApiError(404, "Note not found");
   }
+
+  // Emit real-time deletion (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager && note?.project) {
+      socketManager.emitToProject(
+        note.project.toString(),
+        "note:deleted",
+        { noteId: noteId, projectId: note.project.toString(), deletedBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
 
   return res
     .status(200)

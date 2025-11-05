@@ -73,3 +73,8 @@
 {"timestamp":"2025-11-05T06:36:49.452Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"customer.subscription.deleted"}
 {"timestamp":"2025-11-05T06:36:49.452Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"task.created"}
 {"timestamp":"2025-11-05T06:36:49.452Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"payment_intent.succeeded"}
+{"timestamp":"2025-11-05T13:05:02.834Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"github.push"}
+{"timestamp":"2025-11-05T13:05:02.835Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"github.pull_request"}
+{"timestamp":"2025-11-05T13:05:02.835Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"customer.subscription.deleted"}
+{"timestamp":"2025-11-05T13:05:02.835Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"task.created"}
+{"timestamp":"2025-11-05T13:05:02.835Z","level":"DEBUG","message":"Webhook handler registered","context":"webhook","eventType":"payment_intent.succeeded"}

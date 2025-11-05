@@ -55,6 +55,19 @@ const createTask = asyncHandler(async (req, res) => {
     attachments,
   });
 
+  // Emit real-time task creation (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager) {
+      socketManager.emitToProject(
+        projectId,
+        "task:created",
+        { projectId, task, createdBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
+
   return res
     .status(201)
     .json(new APIResponse(201, task, "Task created successfully"));
@@ -199,6 +212,19 @@ const updateTask = asyncHandler(async (req, res) => {
 
   console.log("Updated task:", task);
 
+  // Emit real-time task update (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager && task?.project) {
+      socketManager.emitToProject(
+        task.project.toString(),
+        "task:updated",
+        { projectId: task.project.toString(), task, updatedBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
+
   return res
     .status(200)
     .json(new APIResponse(200, task, "Task updated successfully"));
@@ -211,6 +237,19 @@ const deleteTask = asyncHandler(async (req, res) => {
   if (!task) {
     throw new ApiError(404, "Task not found");
   }
+
+  // Emit real-time task deletion (best-effort)
+  try {
+    const socketManager = req.app?.locals?.socketManager;
+    if (socketManager && task?.project) {
+      socketManager.emitToProject(
+        task.project.toString(),
+        "task:deleted",
+        { projectId: task.project.toString(), taskId, deletedBy: req.user._id },
+        req.user._id,
+      );
+    }
+  } catch (_) {}
 
   return res
     .status(200)
