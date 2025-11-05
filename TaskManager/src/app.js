@@ -1,21 +1,38 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 
-const app =express();
+const app = express();
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(express.static("public")); // configure static file to save images locally
+app.use(cookieParser());
 
-//router imports
-import healthcheckRoutes from "./routes/healthcheck.routes.js";
-import authRoutes from "./routes/auth.routes.js";
-import noteRoutes from "./routes/note.routes.js";
-import projectRoutes from "./routes/project.routes.js";
-import taskRoutes from "./routes/task.routes.js";
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
-//router middleware
+import { errorHandler } from "./middlewares/error.middlewares.js";
+import authRouter from "./routes/auth.routes.js";
+import healthcheckRouter from "./routes/healthcheck.routes.js";
+import noteRouter from "./routes/note.routes.js";
+import projectRouter from "./routes/project.routes.js";
+import taskRouter from "./routes/task.routes.js";
 
-app.use("/api/v1/healthcheck", healthcheckRoutes);
-// app.use('api/v1/healthcheck/authentication',authRoutes);
-// app.use('api/v1/healthcheck/notes',noteRoutes);
-// app.use('api/v1/healthcheck/projects',projectRoutes);
-// app.use('api/v1/healthcheck/tasks',taskRoutes);
+// * healthcheck
+app.use("/api/v1/healthcheck", healthcheckRouter);
 
+// * app routes
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/projects", projectRouter);
+app.use("/api/v1/tasks", taskRouter); // each task must have projectId to it for permission check
+app.use("/api/v1/notes", noteRouter);
+
+app.use(errorHandler);
 
 export default app;
