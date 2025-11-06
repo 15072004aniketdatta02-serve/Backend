@@ -70,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
       user.username,
       `${req.protocol}://${req.get(
         "host",
-      )}/api/v1/users/verify-email/${unHashedToken}`,
+      )}/api/v1/auth/verify-email/${unHashedToken}`,
     ),
   });
 
@@ -233,7 +233,7 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
       user.username,
       `${req.protocol}://${req.get(
         "host",
-      )}/api/v1/users/verify-email/${unHashedToken}`,
+      )}/api/v1/auth/verify-email/${unHashedToken}`,
     ),
   });
   return res
