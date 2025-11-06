@@ -8,33 +8,40 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { UserRolesEnum } from "../constants/constants.js";
 
 const getTasks = asyncHandler(async (req, res) => {
+  // destructure projectId from req.params
   const { projectId } = req.params;
+  //find project on the basis of project id
   const project = await Project.findById(projectId);
-
+ // if project not found show appropriate error with statusCode and Message
   if (!project) {
     throw new ApiError(404, "Project not found");
   }
+  // find Task associated to a project on the basis of project Id
+  //populate the "assignedTo" , "username fullname avatar"
   const tasks = await Task.find({
     project: new mongoose.Types.ObjectId(projectId),
   }).populate("assignedTo", "username fullName avatar");
-
+  // show success message
   return res
     .status(200)
     .json(new APIResponse(200, tasks, "Tasks fetched successfully"));
 });
-
+// create task
 const createTask = asyncHandler(async (req, res) => {
+  // destructure title , description , assignedTo and status from req.body 
   const { title, description, assignedTo, status } = req.body;
+  //store the projectId in req.params
   const { projectId } = req.params;
+  //find project in db by projectId and store  in project variable
   const project = await Project.findById(projectId);
-
+ // If project not found show appropriate error
   if (!project) {
     throw new ApiError(404, "Project not found");
   }
 
   // Ensure req.files is an array or empty array if undefined
   const files = req.files || [];
-
+//attachments will store the files
   const attachments = files.map((file) => {
     return {
       url: `${process.env.SERVER_URL}/images/${file.originalname}`,
